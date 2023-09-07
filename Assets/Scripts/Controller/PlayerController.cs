@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Idle))] //needs atleast 1 state to fall back on, idle is default
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
     private Keybinds keybinds;
@@ -11,14 +12,15 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-		actor.currentState = GetComponent<Idle>(); //sets idle state to de
+		actor.currentState = GetComponent<Idle>(); //sets idle state to default
+		actor.rigidbody = GetComponent<Rigidbody>();
 
 		keybinds = new Keybinds();
 
 		//gets input actions and sets the current state accordingly
 		keybinds.Player.Move.performed += ctx =>
 		{
-			actor.callbackContext = ctx; //passes input axis inside the callbackcontext
+			actor.inputAxis = ctx.ReadValue<Vector2>(); //passes input axis
 			actor.OnWalk.Invoke();
 		};
 		keybinds.Player.Move.canceled += ctx => actor.OnIdle.Invoke();

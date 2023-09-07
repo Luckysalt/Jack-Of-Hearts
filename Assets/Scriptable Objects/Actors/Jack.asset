@@ -12,11 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4440907cf21e81498f32bf1c1cdc839, type: 3}
   m_Name: Jack
   m_EditorClassIdentifier: 
-  m_lookDirection: {x: 0, y: 0}
-  m_Position: {x: 0, y: 0, z: 0}
-  m_Movement: {x: 0, y: 0, z: 0}
-  m_inputAxis: {x: 0, y: 0}
   m_currentState: {fileID: 0}
+  m_inputAxis: {x: 0, y: 0}
+  m_groundDetectionAffected:
+    serializedVersion: 2
+    m_Bits: 72
+  m_groundDetectionRayDistance: 2
+  m_heightAboveGround: 1.2
+  m_springStrength: 100
+  m_springDamper: 10
   OnIdle:
     m_PersistentCalls:
       m_Calls: []

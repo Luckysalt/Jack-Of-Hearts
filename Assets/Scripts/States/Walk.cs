@@ -13,8 +13,8 @@ public class Walk : State
     {
         actor.OnWalk.RemoveListener(SetToCurrentState);
     }
-    protected override void StartState()
+    public override void FixedUpdateState()
     {
-        actor.inputAxis = actor.callbackContext.ReadValue<Vector2>();
+        base.FixedUpdateState();
     }
 }
