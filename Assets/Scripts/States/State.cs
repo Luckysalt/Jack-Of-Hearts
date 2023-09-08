@@ -16,9 +16,12 @@ public abstract class State : MonoBehaviour
     {
         GroundDetection();
     }
+    ///<summary>
+    /// Sets the height of the Player above ground with a spring, to avoid friction and handle slopes/steps/imperfections better
+    /// Sets the gravity true if the player is airborne and false if grounded 
+    /// </summary>
     private void GroundDetection()
     {
-        // Sets the height of the Player above ground with a spring, to avoid friction and handle slopes/steps/imperfections better
         Vector3 rayDir = transform.TransformDirection(Vector3.down);
         RaycastHit hit;
         if (Physics.Raycast(transform.position, rayDir, out hit, actor.groundDetectionRayDistance, actor.groundDetectionAffected))
@@ -37,14 +40,14 @@ public abstract class State : MonoBehaviour
             float rayDirVel = Vector3.Dot(rayDir, vel);
             float otherDirVel = Vector3.Dot(rayDir, otherVel);
 
-            float relVel = rayDirVel - otherDirVel;
-            float x = hit.distance - actor.heightAboveGround;
+            float relativeVel = rayDirVel - otherDirVel;
+            float currentHeight = hit.distance - actor.heightAboveGround;
 
-            float springForce = (x * actor.springStrength) - (relVel * actor.springDamper);
+            float springForce = (currentHeight * actor.springStrength) - (relativeVel * actor.springDamper);
 
             actor.rigidbody.AddForce(rayDir * springForce);
 
-            if (hitBody != null) // can stomp on rigidbodies 
+            if (hitBody != null) // applies force to rigidbodies beneath 
             {
                 hitBody.AddForceAtPosition(rayDir * -springForce, hit.point);
             }

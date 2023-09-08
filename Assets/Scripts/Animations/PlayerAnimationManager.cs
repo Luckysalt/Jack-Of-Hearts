@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof (Animator))]
-public class AnimationHandler : MonoBehaviour
+public class PlayerAnimationManager : MonoBehaviour
 {
     [SerializeField] private ActorSO actor;
     private Animator animator;
@@ -19,13 +19,13 @@ public class AnimationHandler : MonoBehaviour
     }
     private void OnEnable()
     {
-        actor.OnIdle.AddListener(setIdle);
-        actor.OnWalk.AddListener(setWalk);
+        actor.OnIdleAnim.AddListener(setIdle);
+        actor.OnWalkAnim.AddListener(setWalk);
     }
     private void OnDisable()
     {
-        actor.OnIdle.RemoveListener(setIdle);
-        actor.OnWalk.RemoveListener(setWalk);
+        actor.OnIdleAnim.RemoveListener(setIdle);
+        actor.OnWalkAnim.RemoveListener(setWalk);
     }
 
     private void SetIsWalking(bool isWalking)

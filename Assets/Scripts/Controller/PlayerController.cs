@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Idle))] //needs atleast 1 state to fall back on, idle is default
+[RequireComponent(typeof(Idle))] //needs atleast 1 state, idle is default
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
@@ -20,7 +20,8 @@ public class PlayerController : MonoBehaviour
 		//gets input actions and sets the current state accordingly
 		keybinds.Player.Move.performed += ctx =>
 		{
-			actor.inputAxis = ctx.ReadValue<Vector2>(); //passes input axis
+			Vector2 inputAxis = ctx.ReadValue<Vector2>();
+			actor.moveDirection = new Vector3(inputAxis.x, 0, inputAxis.y);
 			actor.OnWalk.Invoke();
 		};
 		keybinds.Player.Move.canceled += ctx => actor.OnIdle.Invoke();

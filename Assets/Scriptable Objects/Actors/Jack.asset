@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Jack
   m_EditorClassIdentifier: 
   m_currentState: {fileID: 0}
-  m_inputAxis: {x: 0, y: 0}
+  m_moveDirection: {x: 0, y: 0, z: -1}
   m_groundDetectionAffected:
     serializedVersion: 2
     m_Bits: 72
@@ -25,5 +25,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnWalk:
+    m_PersistentCalls:
+      m_Calls: []
+  OnIdleAnim:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWalkAnim:
     m_PersistentCalls:
       m_Calls: []

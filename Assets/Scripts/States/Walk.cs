@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class Walk : State
+public class Walk : Movement
 {
+    protected override void StartState()
+    {
+        actor.OnWalkAnim.Invoke();
+        actor.moveDirection = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0) * actor.moveDirection; //corrects the moveDirection accordingly to camera angle
+    }
     private void OnEnable()
     {
         actor.OnWalk.AddListener(SetToCurrentState);
@@ -12,9 +16,5 @@ public class Walk : State
     private void OnDisable()
     {
         actor.OnWalk.RemoveListener(SetToCurrentState);
-    }
-    public override void FixedUpdateState()
-    {
-        base.FixedUpdateState();
     }
 }
