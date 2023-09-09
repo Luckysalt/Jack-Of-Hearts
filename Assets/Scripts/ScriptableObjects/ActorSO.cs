@@ -18,12 +18,13 @@ public class ActorSO : ScriptableObject
 
     [Header("Movement")]
     [SerializeField] private Vector3 m_moveDirection;
+    [SerializeField] private float m_rotationSpeed = 500f;
     [SerializeField] private float m_maxSpeed = 8f;
     [SerializeField] private float m_acceleration = 200f;
     [SerializeField] private float m_maxAccelForce = 150f;
     [SerializeField] private AnimationCurve m_accelerationFactorFromDot;
     [SerializeField] private AnimationCurve m_maxAccelerationForceFactorFromDot;
-    [SerializeField] private Vector3 m_moveForceScale = new Vector3(1f, 0f, 1f);
+    private Vector3 m_moveForceScale = new Vector3(1f, 0f, 1f);
     private float m_speedFactor = 1f;
     private float m_maxAccelForceFactor = 1f;
     private Vector3 m_goalVel = Vector3.zero;
@@ -44,6 +45,7 @@ public class ActorSO : ScriptableObject
     public State currentState { get { return m_currentState; } set { m_currentState = value; } }
     //Movement
     public Vector3 moveDirection { get { return m_moveDirection;  } set { m_moveDirection = value; } }
+    public float rotationSpeed { get { return m_rotationSpeed; } set { m_rotationSpeed = value; } }
     public float maxSpeed { get { return m_maxSpeed; } set { m_maxSpeed = value; } }
     public float acceleration { get { return m_acceleration; } set { m_acceleration = value; } }
     public float maxAccelForce { get { return m_maxAccelForce; } set { m_maxAccelForce = value; } }

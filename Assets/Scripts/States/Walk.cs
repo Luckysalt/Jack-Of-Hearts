@@ -7,7 +7,7 @@ public class Walk : Movement
     protected override void StartState()
     {
         actor.OnWalkAnim.Invoke();
-        actor.moveDirection = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0) * actor.moveDirection; //corrects the moveDirection accordingly to camera angle
+        actor.moveDirection = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0) * actor.moveDirection; //adjusts the moveDirection so it stays the same regardless Camera angle
     }
     private void OnEnable()
     {

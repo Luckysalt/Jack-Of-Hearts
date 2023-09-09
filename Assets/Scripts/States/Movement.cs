@@ -8,6 +8,7 @@ public class Movement : State
     {
         base.FixedUpdateState();
         PlayerMovement();
+        FaceMovementDirection();
     }
     private void PlayerMovement()
     {
@@ -20,5 +21,15 @@ public class Movement : State
         float maxAccel = actor.maxAccelForce * actor.maxAccelerationForceFactorFromDot.Evaluate(velDot) * actor.maxAccelForceFactor;
         neededAccel = Vector3.ClampMagnitude(neededAccel, maxAccel);
         actor.rigidbody.AddForceAtPosition(Vector3.Scale(neededAccel * actor.rigidbody.mass, actor.moveForceScale), transform.position);
+    }
+    private void FaceMovementDirection()
+    {
+        if (!actor.moveDirection.Equals(Vector3.zero))
+        {
+            Quaternion rotation = Quaternion.LookRotation(actor.moveDirection);
+            rotation.x = 0f;
+            rotation.z = 0f;
+            actor.rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, rotation, actor.rotationSpeed * Time.fixedDeltaTime));
+        }
     }
 }
