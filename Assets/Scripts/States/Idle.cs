@@ -6,6 +6,7 @@ public class Idle : Movement
 {
     protected override void StartState()
     {
+        base.StartState();
         actor.OnIdleAnim.Invoke();
         actor.moveDirection = Vector3.zero;
     }

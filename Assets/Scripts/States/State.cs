@@ -5,12 +5,14 @@ using UnityEngine;
 public abstract class State : MonoBehaviour
 {
     [SerializeField] protected ActorSO actor;
+    protected float stateLifeTime;
     protected virtual void SetToCurrentState() 
     {
         actor.currentState = this;
         StartState();
     }
     protected virtual void StartState() { }
+    protected virtual void EndState() { }
     public virtual void UpdateState() { }
     public virtual void FixedUpdateState() 
     {

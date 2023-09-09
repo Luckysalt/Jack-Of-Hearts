@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class Movement : State
 {
+    protected override void StartState()
+    {
+        if(!actor.moveDirection.Equals(Vector3.zero))actor.lookDirection = actor.moveDirection;
+    }
     public override void FixedUpdateState()
     {
         base.FixedUpdateState();
-        PlayerMovement();
+        ActorMovement();
         FaceMovementDirection();
     }
-    private void PlayerMovement()
+    private void ActorMovement()
     {
+        if (actor.currentState.GetType() == typeof(Dash)) return; //if actor is dashing, skip movement
+
         Vector3 unitVel = actor.goalVel.normalized;
         float velDot = Vector3.Dot(actor.moveDirection, unitVel);
         float accel = actor.acceleration * actor.accelerationFactorFromDot.Evaluate(velDot);
@@ -24,12 +30,16 @@ public class Movement : State
     }
     private void FaceMovementDirection()
     {
-        if (!actor.moveDirection.Equals(Vector3.zero))
+        float rotationSpeed;
+        if (actor.currentState.GetType() == typeof(Dash)) rotationSpeed = 1000f; //if actor is dashing, instant rotation towards dash direction
+        else rotationSpeed = actor.rotationSpeed;
+
+        if (!actor.lookDirection.Equals(Vector3.zero))
         {
-            Quaternion rotation = Quaternion.LookRotation(actor.moveDirection);
+            Quaternion rotation = Quaternion.LookRotation(actor.lookDirection);
             rotation.x = 0f;
             rotation.z = 0f;
-            actor.rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, rotation, actor.rotationSpeed * Time.fixedDeltaTime));
+            actor.rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.fixedDeltaTime));
         }
     }
 }

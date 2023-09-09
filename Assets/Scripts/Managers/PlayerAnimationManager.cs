@@ -21,15 +21,21 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         actor.OnIdleAnim.AddListener(setIdle);
         actor.OnWalkAnim.AddListener(setWalk);
+        actor.OnDashAnim.AddListener(setDash);
     }
     private void OnDisable()
     {
         actor.OnIdleAnim.RemoveListener(setIdle);
         actor.OnWalkAnim.RemoveListener(setWalk);
+        actor.OnDashAnim.RemoveListener(setDash);
     }
 
     private void SetIsWalking(bool isWalking)
     {
         animator.SetBool("isWalking", isWalking);
+    }
+    private void setDash()
+    {
+        animator.SetTrigger("Dash");
     }
 }

@@ -5,19 +5,20 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "Actor", menuName = "ScriptableObjects/Actor", order = 1)]
+/// <summary>
+/// The Actor Scriptable Object (short: ActorSO) resembles a Player,Enemy or NPC 
+/// it acts as the middle man for independent modular components like Controllers, States and (Animation/Sound/Health/...)Managers
+/// and contains parameters and events they can subscribe to
+/// </summary>
 public class ActorSO : ScriptableObject
 {
-    /// <summary>
-    /// The Actor Scriptable Object (short: ActorSO) resembles a Player,Enemy or NPC 
-    /// it acts as the middle man for independent modular components like Controllers, States and (Animation/Sound/Health/...)Managers
-    /// and contains parameters and events they can subscribe to
-    /// </summary>
     #region Properties
     [Header("State")]
     [SerializeField] private State m_currentState;
 
     [Header("Movement")]
     [SerializeField] private Vector3 m_moveDirection;
+    [SerializeField] private Vector3 m_lookDirection;
     [SerializeField] private float m_rotationSpeed = 500f;
     [SerializeField] private float m_maxSpeed = 8f;
     [SerializeField] private float m_acceleration = 200f;
@@ -29,6 +30,11 @@ public class ActorSO : ScriptableObject
     private float m_maxAccelForceFactor = 1f;
     private Vector3 m_goalVel = Vector3.zero;
 
+    [Header("Dash")]
+    [SerializeField] private float m_dashTime = 0.5f;
+    [SerializeField] private float m_dashForce = 0.7f;
+    [SerializeField] private float m_dashCoolDown = 3f;
+
     [Header("Ground Detection")]
     [SerializeField] private LayerMask m_groundDetectionAffected;
     [SerializeField] private float m_groundDetectionRayDistance;
@@ -38,6 +44,9 @@ public class ActorSO : ScriptableObject
 
     //Rigidbody
     private Rigidbody m_rigidbody;
+
+    //Player Input
+    private Keybinds m_keybinds;
     #endregion
 
     #region Getters/Setters
@@ -45,6 +54,7 @@ public class ActorSO : ScriptableObject
     public State currentState { get { return m_currentState; } set { m_currentState = value; } }
     //Movement
     public Vector3 moveDirection { get { return m_moveDirection;  } set { m_moveDirection = value; } }
+    public Vector3 lookDirection { get { return m_lookDirection; } set { m_lookDirection = value; } }
     public float rotationSpeed { get { return m_rotationSpeed; } set { m_rotationSpeed = value; } }
     public float maxSpeed { get { return m_maxSpeed; } set { m_maxSpeed = value; } }
     public float acceleration { get { return m_acceleration; } set { m_acceleration = value; } }
@@ -55,7 +65,10 @@ public class ActorSO : ScriptableObject
     public float speedFactor { get { return m_speedFactor; } set { m_speedFactor = value; } }
     public float maxAccelForceFactor { get { return m_maxAccelForceFactor; } set { m_maxAccelForceFactor = value; } }
     public Vector3 goalVel { get { return m_goalVel; } set { m_goalVel = value; } }
-
+    //Dash
+    public float dashTime { get { return m_dashTime; } set { m_dashTime = value; } }
+    public float dashForce { get { return m_dashForce; } set { m_dashForce = value; } }
+    public float dashCoolDown { get { return m_dashCoolDown; } set { m_dashCoolDown = value; } }
     //Ground Detection
     public LayerMask groundDetectionAffected { get { return m_groundDetectionAffected; } set { m_groundDetectionAffected = value; } }
     public float groundDetectionRayDistance { get { return m_groundDetectionRayDistance; } set { m_groundDetectionRayDistance = value; } }
@@ -64,14 +77,19 @@ public class ActorSO : ScriptableObject
     public float springDamper { get { return m_springDamper; } set { m_springDamper = value; } }
     //Rigidbody
     public Rigidbody rigidbody { get { return m_rigidbody; } set { m_rigidbody = value; } }
+    //Player Input
+    public Keybinds keybinds { get { return m_keybinds; } set { m_keybinds = value; } }
     #endregion
 
     #region Events
     //States
-    [HideInInspector]public UnityEvent OnIdle = new UnityEvent();
-    [HideInInspector]public UnityEvent OnWalk = new UnityEvent();
+    [HideInInspector] public UnityEvent OnIdle = new UnityEvent();
+    [HideInInspector] public UnityEvent OnWalk = new UnityEvent();
+    [HideInInspector] public UnityEvent OnDash = new UnityEvent();
+    [HideInInspector] public UnityEvent OnAttack = new UnityEvent();
     //Animations
     [HideInInspector] public UnityEvent OnIdleAnim = new UnityEvent();
     [HideInInspector] public UnityEvent OnWalkAnim = new UnityEvent();
+    [HideInInspector] public UnityEvent OnDashAnim = new UnityEvent();
     #endregion
 }
