@@ -18,9 +18,9 @@ public class PlayerController : MonoBehaviour
 
 		//gets input actions and sets the current state accordingly
 		actor.keybinds.Player.Move.performed += ctx =>
-		{ 
-			if (actor.currentState.GetType() == typeof(Dash)) return;
+		{
 			actor.moveDirection = GetDirection(ctx);
+			if (actor.currentState.GetType() == typeof(Dash)) return;
 			actor.OnWalk.Invoke();
 		};
 		actor.keybinds.Player.Move.canceled += ctx =>

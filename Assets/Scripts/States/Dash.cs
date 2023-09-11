@@ -23,7 +23,9 @@ public class Dash : Movement
     {
         base.EndState();
         actor.rigidbody.velocity = Vector3.zero;
-        actor.OnIdle.Invoke();
+
+        if (actor.keybinds.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
+        else actor.OnIdle.Invoke();
     }
     private void OnEnable()
     {
