@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private ActorSO actor;
 	private float dashCounter = 0;
 	private bool isDashReady = true;
+
+	private float attackCounter = 0;
+	private bool isAttackReady = true;
     private void Awake()
     {
 		actor.currentState = GetComponent<Idle>(); //sets idle state to default
@@ -35,7 +38,15 @@ public class PlayerController : MonoBehaviour
 			isDashReady = false;
 			actor.OnDash.Invoke();
 		};
-		actor.keybinds.Player.Attack.performed += ctx => actor.OnAttack.Invoke();
+		actor.keybinds.Player.Attack.performed += ctx =>
+		{
+			if (actor.currentState.GetType() == typeof(Dash)) return;
+			if (!isAttackReady)	return;
+
+			attackCounter = actor.attackCoolDown;
+			isAttackReady = false;
+			actor.OnAttack.Invoke();
+		};
 	}
 	private Vector3 GetDirection(InputAction.CallbackContext ctx)
 	{
@@ -47,8 +58,10 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
 		if(!isDashReady) dashCounter -= Time.deltaTime;
-		if (dashCounter <= 0) isDashReady = true;	
+		if (dashCounter <= 0) isDashReady = true;
 
+		if (!isAttackReady) attackCounter -= Time.deltaTime;
+		if (attackCounter <= 0) isAttackReady = true;
 		actor.currentState.UpdateState();
     }
     private void FixedUpdate()

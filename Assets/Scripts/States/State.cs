@@ -11,12 +11,17 @@ public abstract class State : MonoBehaviour
         actor.currentState = this;
         StartState();
     }
-    protected virtual void StartState() { }
+    protected virtual void StartState()
+    {
+        if (!actor.moveDirection.Equals(Vector3.zero)) actor.lookDirection = actor.moveDirection;
+    }
     protected virtual void EndState() { }
     public virtual void UpdateState() { }
     public virtual void FixedUpdateState() 
     {
         GroundDetection();
+        Movement();
+        FacingDirection();
     }
     ///<summary>
     /// Sets the height of the Player above ground with a spring, to avoid friction and handle slopes/steps/imperfections better
@@ -60,6 +65,36 @@ public abstract class State : MonoBehaviour
         else
         {
             if (!actor.rigidbody.useGravity) actor.rigidbody.useGravity = true;
+        }
+    }
+    private void Movement()
+    {
+        if (actor.currentState.GetType() == typeof(Dash)) return; //if actor is dashing, skip movement
+        if (actor.currentState.GetType() == typeof(Attack)) return;
+
+        Vector3 unitVel = actor.goalVel.normalized;
+        float velDot = Vector3.Dot(actor.moveDirection, unitVel);
+        float accel = actor.acceleration * actor.accelerationFactorFromDot.Evaluate(velDot);
+        Vector3 goalVel = actor.moveDirection * actor.maxSpeed * actor.speedFactor;
+        actor.goalVel = Vector3.MoveTowards(actor.goalVel, goalVel, accel * Time.fixedDeltaTime);
+        Vector3 neededAccel = (actor.goalVel - actor.rigidbody.velocity) / Time.fixedDeltaTime;
+        float maxAccel = actor.maxAccelForce * actor.maxAccelerationForceFactorFromDot.Evaluate(velDot) * actor.maxAccelForceFactor;
+        neededAccel = Vector3.ClampMagnitude(neededAccel, maxAccel);
+        actor.rigidbody.AddForceAtPosition(Vector3.Scale(neededAccel * actor.rigidbody.mass, actor.moveForceScale), transform.position);
+    }
+    private void FacingDirection()
+    {
+        float rotationSpeed;
+        if (actor.currentState.GetType() == typeof(Dash)) rotationSpeed = 1000f; //if actor is dashing, instant rotation towards dash direction
+        else if (actor.currentState.GetType() == typeof(Attack)) rotationSpeed = 1000f; //same for attack
+        else rotationSpeed = actor.rotationSpeed;
+
+        if (!actor.lookDirection.Equals(Vector3.zero))
+        {
+            Quaternion rotation = Quaternion.LookRotation(actor.lookDirection);
+            rotation.x = 0f;
+            rotation.z = 0f;
+            actor.rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.fixedDeltaTime));
         }
     }
 }

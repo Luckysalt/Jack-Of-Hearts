@@ -42,6 +42,10 @@ public class ActorSO : ScriptableObject
     [SerializeField] private float m_springStrength;
     [SerializeField] private float m_springDamper;
 
+    [Header("Attack")]
+    public float attackCoolDown = 1f;
+    public float attackForwardForce = .7f;
+
     //Rigidbody
     private Rigidbody m_rigidbody;
 

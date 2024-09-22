@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dash : Movement
+public class Dash : State
 {
     protected override void StartState()
     {

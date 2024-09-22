@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Walk : Movement
+public class Walk : State
 {
     protected override void StartState()
     {
