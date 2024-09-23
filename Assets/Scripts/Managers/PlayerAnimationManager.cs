@@ -10,8 +10,9 @@ public class PlayerAnimationManager : MonoBehaviour
     private Animator animator;
     private UnityAction setIdle;
     private UnityAction setWalk;
-
+    private UnityAction<bool> setDash;
     private UnityAction<bool, int> setAttack;
+
     private List<string> attacks = new List<string>();
 
     private void Awake()
@@ -20,6 +21,7 @@ public class PlayerAnimationManager : MonoBehaviour
         setIdle = new UnityAction(() => SetIsWalking(false));
         setWalk = new UnityAction(() => SetIsWalking(true));
 
+        setDash = new UnityAction<bool>((isDashing) => SetIsDashing(isDashing));
         setAttack = new UnityAction<bool, int>((isAttacking, attackID) => SetIsAttacking(isAttacking, attackID));
 
         attacks.Add("Attack_01");
@@ -30,15 +32,15 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         actor.OnIdleAnim.AddListener(setIdle);
         actor.OnWalkAnim.AddListener(setWalk);
-        actor.OnDashAnim.AddListener(TriggerDash);
-        actor.onAttackAnim.AddListener(setAttack);
+        actor.OnDashAnim.AddListener(setDash);
+        actor.OnAttackAnim.AddListener(setAttack);
     }
     private void OnDisable()
     {
         actor.OnIdleAnim.RemoveListener(setIdle);
         actor.OnWalkAnim.RemoveListener(setWalk);
-        actor.OnDashAnim.RemoveListener(TriggerDash);
-        actor.onAttackAnim.RemoveListener(setAttack);
+        actor.OnDashAnim.RemoveListener(setDash);
+        actor.OnAttackAnim.RemoveListener(setAttack);
 
     }
 
@@ -46,9 +48,9 @@ public class PlayerAnimationManager : MonoBehaviour
     {
         animator.SetBool("isWalking", isWalking);
     }
-    private void TriggerDash()
+    private void SetIsDashing(bool isDashing)
     {
-        animator.SetTrigger("Dash");
+        animator.SetBool("isDashing", isDashing);
     }
     private void SetIsAttacking(bool isAttacking, int attackID)
     {

@@ -8,7 +8,7 @@ public class Dash : State
     protected override void StartState()
     {
         base.StartState();
-        actor.OnDashAnim.Invoke();
+        actor.OnDashAnim.Invoke(true);
         stateLifeTime = actor.dashTime;
         actor.rigidbody.velocity = Vector3.zero;
 
@@ -30,6 +30,8 @@ public class Dash : State
     {
         base.EndState();
         actor.rigidbody.velocity = Vector3.zero;
+
+        actor.OnDashAnim.Invoke(false);
 
         switch (actor.playerInputBuffer)
         {

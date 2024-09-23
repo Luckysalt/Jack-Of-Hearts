@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{9360eaf6-7ce3-4669-96c1-9adec97e99d1}">
+		<property name="assetPath">
+			<value>sword_whoosh,_foley,.mp3</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>8.0718367346938784</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{7c81f07c-c4f7-4473-adf5-4358486febbe}</destination>
+		</relationship>
+	</object>
+</objects>

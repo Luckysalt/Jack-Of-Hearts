@@ -8,7 +8,7 @@ public class Attack : State
     protected override void StartState()
     {
         base.StartState();
-        actor.onAttackAnim.Invoke(true, actor.currentAttackID);
+        actor.OnAttackAnim.Invoke(true, actor.currentAttackID);
 
         stateLifeTime = actor.attackTime;
         actor.rigidbody.velocity = Vector3.zero;
@@ -33,7 +33,7 @@ public class Attack : State
     {
         base.EndState();
 
-        actor.onAttackAnim.Invoke(false,actor.currentAttackID);
+        actor.OnAttackAnim.Invoke(false,actor.currentAttackID);
 
         if (actor.currentAttackID >= 2)
         {

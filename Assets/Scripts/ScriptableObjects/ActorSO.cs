@@ -112,7 +112,7 @@ public class ActorSO : ScriptableObject
     //Animations
     [HideInInspector] public UnityEvent OnIdleAnim = new UnityEvent();
     [HideInInspector] public UnityEvent OnWalkAnim = new UnityEvent();
-    [HideInInspector] public UnityEvent OnDashAnim = new UnityEvent();
-    [HideInInspector] public UnityEvent<bool, int> onAttackAnim = new UnityEvent<bool, int>();
+    [HideInInspector] public UnityEvent<bool> OnDashAnim = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool, int> OnAttackAnim = new UnityEvent<bool, int>();
     #endregion
 }

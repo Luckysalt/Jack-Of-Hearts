@@ -94,13 +94,15 @@ public class PlayerController : MonoBehaviour
 			if (attackCounter <= 0)
             {
 				isAttackReady = true;
-
-				if(actor.playerInputBuffer.Equals(ActorSO.InputBuffer.Attack))
+				if (actor.currentState.GetType() != typeof(Dash))
                 {
-					actor.OnAttack.Invoke();
-					isAttackReady = false;
-					actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
-                }
+					if (actor.playerInputBuffer.Equals(ActorSO.InputBuffer.Attack))
+					{
+						actor.OnAttack.Invoke();
+						isAttackReady = false;
+						actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+					}
+				}
 			}
 		}
 		actor.currentState.UpdateState();
