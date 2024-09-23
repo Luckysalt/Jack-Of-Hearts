@@ -4,18 +4,29 @@ using UnityEngine;
 
 public class Attack : State
 {
+    private Vector3 attackDashTarget;
     protected override void StartState()
     {
         base.StartState();
-        stateLifeTime = .5f;
+
+        actor.OnAttackAnim.Invoke();
+
+        stateLifeTime = actor.attackTime;
         actor.rigidbody.velocity = Vector3.zero;
+        actor.lookDirection = actor.aimDirection;
+
+        SetAttackDashTarget();
     }
     public override void FixedUpdateState()
     {
         base.FixedUpdateState();
-        // actor.rigidbody.AddForce(actor.lookDirection * actor.dashForce, ForceMode.Impulse);
 
-        Debug.Log("Attack");
+        Vector3 newPosition = MathsUtils.LerpSmoothing(transform.position, attackDashTarget, actor.attackDashSpeed, Time.fixedDeltaTime);
+
+        actor.rigidbody.MovePosition(newPosition);
+
+        //Debug.DrawLine(transform.position, attackDashTarget,Color.black);
+
         stateLifeTime -= Time.fixedDeltaTime;
         if (stateLifeTime <= 0) EndState();
     }
@@ -26,6 +37,22 @@ public class Attack : State
 
         if (actor.keybinds.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
         else actor.OnIdle.Invoke();
+    }
+    private void SetAttackDashTarget()
+    {
+        float distance = actor.attackDashDistance;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, actor.aimDirection, out hit, Mathf.Infinity, actor.antiClippingDetection))
+        {
+            if(distance > hit.distance)
+            {
+                distance = hit.distance;
+            }
+        }
+
+        attackDashTarget = transform.position + actor.aimDirection * distance;
     }
     private void OnEnable()
     {

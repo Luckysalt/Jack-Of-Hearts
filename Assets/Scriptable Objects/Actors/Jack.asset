@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: Jack
   m_EditorClassIdentifier: 
   m_currentState: {fileID: 0}
+  aimDirection: {x: -0.9670257, y: 0, z: 0.25467876}
+  aimTarget: {x: -10.972404, y: 3.4855204, z: -4.282188}
   m_moveDirection: {x: 0, y: 0, z: 0}
-  m_lookDirection: {x: 0.7071068, y: 0, z: 0.7071067}
-  m_rotationSpeed: 700
+  m_lookDirection: {x: 0.7071067, y: 0, z: -0.7071068}
+  m_rotationSpeed: 800
   m_maxSpeed: 6
-  m_acceleration: 200
-  m_maxAccelForce: 150
+  m_acceleration: 100
+  m_maxAccelForce: 200
   m_accelerationFactorFromDot:
     serializedVersion: 2
     m_Curve:
@@ -95,8 +97,11 @@ MonoBehaviour:
   m_heightAboveGround: 1.2
   m_springStrength: 100
   m_springDamper: 10
-  attackCoolDown: 10
-  attackForwardForce: 0.7
+  antiClippingDetection:
+    serializedVersion: 2
+    m_Bits: 72
+  attackCoolDown: 1
+  attackDashSpeed: 1
   OnIdle:
     m_PersistentCalls:
       m_Calls: []
@@ -116,5 +121,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnDashAnim:
+    m_PersistentCalls:
+      m_Calls: []
+  OnAttackAnim:
     m_PersistentCalls:
       m_Calls: []

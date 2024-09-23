@@ -22,6 +22,7 @@ public class PlayerAnimationManager : MonoBehaviour
         actor.OnIdleAnim.AddListener(setIdle);
         actor.OnWalkAnim.AddListener(setWalk);
         actor.OnDashAnim.AddListener(setDash);
+        actor.OnAttackAnim.AddListener(setAttack);
     }
     private void OnDisable()
     {
@@ -37,5 +38,9 @@ public class PlayerAnimationManager : MonoBehaviour
     private void setDash()
     {
         animator.SetTrigger("Dash");
+    }
+    private void setAttack()
+    {
+        animator.SetTrigger("Attack_Scythe_1");
     }
 }

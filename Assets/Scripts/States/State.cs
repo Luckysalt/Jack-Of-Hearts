@@ -59,8 +59,8 @@ public abstract class State : MonoBehaviour
                 hitBody.AddForceAtPosition(rayDir * -springForce, hit.point);
             }
 
-            //Debug.DrawLine(transform.position, hit.point, Color.yellow);
-            //Debug.DrawLine(transform.position, transform.position + (rayDir * springForce), Color.red);
+            Debug.DrawLine(transform.position, hit.point, Color.yellow);
+            Debug.DrawLine(transform.position, transform.position + (rayDir * springForce), Color.red);
         }
         else
         {
@@ -73,10 +73,15 @@ public abstract class State : MonoBehaviour
         if (actor.currentState.GetType() == typeof(Attack)) return;
 
         Vector3 unitVel = actor.goalVel.normalized;
+
         float velDot = Vector3.Dot(actor.moveDirection, unitVel);
+
         float accel = actor.acceleration * actor.accelerationFactorFromDot.Evaluate(velDot);
+
         Vector3 goalVel = actor.moveDirection * actor.maxSpeed * actor.speedFactor;
-        actor.goalVel = Vector3.MoveTowards(actor.goalVel, goalVel, accel * Time.fixedDeltaTime);
+
+        actor.goalVel = Vector3.MoveTowards(actor.goalVel, goalVel, accel * Time.fixedDeltaTime); // ToDo: goalVel + groundVel
+
         Vector3 neededAccel = (actor.goalVel - actor.rigidbody.velocity) / Time.fixedDeltaTime;
         float maxAccel = actor.maxAccelForce * actor.maxAccelerationForceFactorFromDot.Evaluate(velDot) * actor.maxAccelForceFactor;
         neededAccel = Vector3.ClampMagnitude(neededAccel, maxAccel);

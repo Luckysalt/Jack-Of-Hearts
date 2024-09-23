@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Aim : MonoBehaviour
 {
     [SerializeField] private InputActionAsset actionAsset;
+    [SerializeField] private ActorSO actor;
 
     private InputAction mousePositionAction;
     private Camera mainCamera;
@@ -13,12 +14,10 @@ public class Aim : MonoBehaviour
     [Header("Aim")]
     [SerializeField] private bool aim;
     [SerializeField] private LayerMask groundMask;
-    [SerializeField] private bool ignoreHeight;
-    [SerializeField] private Transform aimedTransform;
+    [SerializeField] private Transform aimingTransform;
 
     [Header("Gizmos")]
     [SerializeField] private bool gizmo_cameraRay = false;
-    [SerializeField] private bool gizmo_ground = false;
     [SerializeField] private bool gizmo_target = false;
     [SerializeField] private bool gizmo_ignoredHeightTarget = false;
     [SerializeField] private bool gizmo_projectedTarget = false;
@@ -27,7 +26,7 @@ public class Aim : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        groundMask = LayerMask.GetMask("Ground");
+        groundMask = LayerMask.GetMask("AimGround");
 
         mousePositionAction = actionAsset.FindAction("MousePosition");
     }
@@ -54,19 +53,17 @@ public class Aim : MonoBehaviour
         var (success, position) = GetMousePosition();
         if (success)
         {
-            // Direction is usually normalized, 
-            // but it does not matter in this case.
-            Vector3 direction = position - aimedTransform.position;
+            Vector3 groundPoint = position;
+            Vector3 aimPoint = new Vector3(position.x, aimingTransform.position.y,position.z);
 
-            if (ignoreHeight)
-            {
-                // Ignore the height difference.
-                direction.y = 0;
-            }
+            Vector3 cameraPosition = mainCamera.transform.position;
+            float t = (aimPoint.y - groundPoint.y) / (cameraPosition.y - groundPoint.y);
+            Vector3 aimTarget = Vector3.Lerp(groundPoint, cameraPosition, t);
 
-            // Make the transform look at the mouse position.
+            Vector3 aimDirection = new Vector3(aimTarget.x, 0, aimTarget.z) - new Vector3(aimingTransform.position.x, 0, aimingTransform.position.z);
 
-            //aimedTransform.forward = direction;
+            actor.aimTarget = aimTarget;
+            actor.aimDirection = aimDirection.normalized;
         }
     }
 
@@ -103,38 +100,35 @@ public class Aim : MonoBehaviour
             }
 
             Vector3 hitPosition = hit.point;
-            Vector3 hitGroundHeight = Vector3.Scale(hit.point, new Vector3(1, 0, 1)); ;
-            Vector3 hitPositionIgnoredHeight = new Vector3(hit.point.x, aimedTransform.position.y, hit.point.z);
-
-           // if (gizmo_ground)
-           // {
-           //     Gizmos.color = Color.red;
-           //     Gizmos.DrawWireSphere(hitGroundHeight, 0.5f);
-           //     Gizmos.DrawLine(hitGroundHeight, hitPosition);
-           // }
+            Vector3 hitPositionIgnoredHeight = new Vector3(hit.point.x, aimingTransform.position.y, hit.point.z);
 
             if (gizmo_target)
             {
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawWireSphere(hit.point, 0.5f);
-                Gizmos.DrawLine(aimedTransform.position, hitPosition);
+                Gizmos.DrawLine(aimingTransform.position, hitPosition);
             }
 
             if (gizmo_ignoredHeightTarget)
             {
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireSphere(hitPositionIgnoredHeight, 0.5f);
-                Gizmos.DrawLine(aimedTransform.position, hitPositionIgnoredHeight);
+                Gizmos.DrawLine(aimingTransform.position, hitPositionIgnoredHeight);
             }
 
             if(gizmo_projectedTarget)
             {
+
+                Vector3 groundPoint = hitPosition;
+                Vector3 aimPoint = hitPositionIgnoredHeight;
+
                 Vector3 cameraPosition = mainCamera.transform.position;
-                float t = (hitPositionIgnoredHeight.y - hit.point.y) / (cameraPosition.y - hit.point.y);
-                Vector3 aimTarget = Vector3.Lerp(hit.point, cameraPosition, t);
+                float t = (aimPoint.y - groundPoint.y) / (cameraPosition.y - groundPoint.y);
+                Vector3 aimTarget = Vector3.Lerp(groundPoint, cameraPosition, t);
+
                 Gizmos.color = Color.magenta;
                 Gizmos.DrawWireSphere(aimTarget, 0.5f);
-                Gizmos.DrawLine(aimedTransform.position, aimTarget);
+                Gizmos.DrawLine(aimingTransform.position, aimTarget);
             }
         }
     }

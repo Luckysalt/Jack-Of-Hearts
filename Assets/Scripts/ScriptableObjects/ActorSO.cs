@@ -16,6 +16,10 @@ public class ActorSO : ScriptableObject
     [Header("State")]
     [SerializeField] private State m_currentState;
 
+    [Header("Aiming")]
+    public Vector3 aimDirection;
+    public Vector3 aimTarget;
+
     [Header("Movement")]
     [SerializeField] private Vector3 m_moveDirection;
     [SerializeField] private Vector3 m_lookDirection;
@@ -43,8 +47,11 @@ public class ActorSO : ScriptableObject
     [SerializeField] private float m_springDamper;
 
     [Header("Attack")]
+    public LayerMask antiClippingDetection;
     public float attackCoolDown = 1f;
-    public float attackForwardForce = .7f;
+    public float attackTime = 1f;
+    public float attackDashSpeed = 10f;
+    public float attackDashDistance = 3f;
 
     //Rigidbody
     private Rigidbody m_rigidbody;
@@ -54,6 +61,7 @@ public class ActorSO : ScriptableObject
     #endregion
 
     #region Getters/Setters
+    // buttugly and annoying getters and setters, better make everything public, who cares
     //State
     public State currentState { get { return m_currentState; } set { m_currentState = value; } }
     //Movement
@@ -83,7 +91,7 @@ public class ActorSO : ScriptableObject
     public Rigidbody rigidbody { get { return m_rigidbody; } set { m_rigidbody = value; } }
     //Player Input
     public Keybinds keybinds { get { return m_keybinds; } set { m_keybinds = value; } }
-    #endregion
+    #endregion // i stopped using getters and setters and made the rest public, this is just annoying to keep up with
 
     #region Events
     //States
@@ -95,5 +103,6 @@ public class ActorSO : ScriptableObject
     [HideInInspector] public UnityEvent OnIdleAnim = new UnityEvent();
     [HideInInspector] public UnityEvent OnWalkAnim = new UnityEvent();
     [HideInInspector] public UnityEvent OnDashAnim = new UnityEvent();
+    [HideInInspector] public UnityEvent OnAttackAnim = new UnityEvent();
     #endregion
 }

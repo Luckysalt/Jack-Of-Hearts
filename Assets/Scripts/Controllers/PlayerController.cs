@@ -24,15 +24,18 @@ public class PlayerController : MonoBehaviour
 		{
 			actor.moveDirection = GetDirection(ctx);
 			if (actor.currentState.GetType() == typeof(Dash)) return;
+			if (actor.currentState.GetType() == typeof(Attack)) return;
 			actor.OnWalk.Invoke();
 		};
 		actor.keybinds.Player.Move.canceled += ctx =>
 		{ 
 			if (actor.currentState.GetType() == typeof(Dash)) return;
+			if (actor.currentState.GetType() == typeof(Attack)) return;
 			actor.OnIdle.Invoke();
 		};
 		actor.keybinds.Player.Dash.performed += ctx =>
 		{
+			if (actor.currentState.GetType() == typeof(Attack)) return;
 			if (!isDashReady) return;
 			dashCounter = actor.dashCoolDown;
 			isDashReady = false;

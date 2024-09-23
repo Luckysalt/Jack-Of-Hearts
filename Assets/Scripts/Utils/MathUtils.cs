@@ -104,4 +104,10 @@ public static class MathsUtils
 
         return current;
     }
+
+    //Thank you Freya Holmer
+    public static Vector3 LerpSmoothing (Vector3 start, Vector3 end, float decay, float dt)
+    {
+        return end + (start - end) * Mathf.Exp(-decay * dt);
+    }
 }
