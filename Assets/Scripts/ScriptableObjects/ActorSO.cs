@@ -36,8 +36,18 @@ public class ActorSO : ScriptableObject
 
     [Header("Dash")]
     [SerializeField] private float m_dashTime = 0.5f;
-    [SerializeField] private float m_dashForce = 0.7f;
-    [SerializeField] private float m_dashCoolDown = 3f;
+    [SerializeField] private float m_dashCoolDown = 1f;
+    [SerializeField] private float m_dashSpeed = 0.7f;
+    public float dashDistance = 5f;
+
+    [Header("Attack")]
+    public LayerMask antiClippingDetection;
+    public float attackTime = 1f;
+    public float attackCoolDown = 1f;
+    public float attackDashSpeed = 10f;
+    public float attackDashDistance = 3f;
+    public int currentAttackID = 0;
+
 
     [Header("Ground Detection")]
     [SerializeField] private LayerMask m_groundDetectionAffected;
@@ -46,25 +56,18 @@ public class ActorSO : ScriptableObject
     [SerializeField] private float m_springStrength;
     [SerializeField] private float m_springDamper;
 
-    [Header("Attack")]
-    public LayerMask antiClippingDetection;
-    public float attackCoolDown = 1f;
-    public float attackTime = 1f;
-    public float attackDashSpeed = 10f;
-    public float attackDashDistance = 3f;
-
-    //Rigidbody
-    private Rigidbody m_rigidbody;
-
-    //Player Input
     private Keybinds m_keybinds;
-    public enum InputBuffer
+    [HideInInspector] public enum InputBuffer
     {
         Empty,
         Attack,
         Dash,
     }
     public InputBuffer playerInputBuffer = InputBuffer.Empty;
+
+    //Rigidbody
+    private Rigidbody m_rigidbody;
+
     #endregion
 
     #region Getters/Setters
@@ -86,7 +89,7 @@ public class ActorSO : ScriptableObject
     public Vector3 goalVel { get { return m_goalVel; } set { m_goalVel = value; } }
     //Dash
     public float dashTime { get { return m_dashTime; } set { m_dashTime = value; } }
-    public float dashForce { get { return m_dashForce; } set { m_dashForce = value; } }
+    public float dashSpeed { get { return m_dashSpeed; } set { m_dashSpeed = value; } }
     public float dashCoolDown { get { return m_dashCoolDown; } set { m_dashCoolDown = value; } }
     //Ground Detection
     public LayerMask groundDetectionAffected { get { return m_groundDetectionAffected; } set { m_groundDetectionAffected = value; } }
@@ -110,6 +113,6 @@ public class ActorSO : ScriptableObject
     [HideInInspector] public UnityEvent OnIdleAnim = new UnityEvent();
     [HideInInspector] public UnityEvent OnWalkAnim = new UnityEvent();
     [HideInInspector] public UnityEvent OnDashAnim = new UnityEvent();
-    [HideInInspector] public UnityEvent OnAttackAnim = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool, int> onAttackAnim = new UnityEvent<bool, int>();
     #endregion
 }

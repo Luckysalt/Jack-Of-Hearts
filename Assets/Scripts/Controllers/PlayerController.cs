@@ -36,11 +36,17 @@ public class PlayerController : MonoBehaviour
 		};
 		actor.keybinds.Player.Dash.performed += ctx =>
 		{
-			if (actor.currentState.GetType() == typeof(Attack))
+			if (actor.currentState.GetType() == typeof(Dash))
+			{
+				actor.playerInputBuffer = ActorSO.InputBuffer.Dash;
+				return;
+			}
+			else if (actor.currentState.GetType() == typeof(Attack))
             {
 				actor.playerInputBuffer = ActorSO.InputBuffer.Dash;
 				return;
             }
+
 			if (!isDashReady) return;
 			dashCounter = actor.dashCoolDown;
 			isDashReady = false;
@@ -53,8 +59,13 @@ public class PlayerController : MonoBehaviour
 				actor.playerInputBuffer = ActorSO.InputBuffer.Attack;
 				return;
             }
-			if (!isAttackReady)	return;
+			else if (actor.currentState.GetType() == typeof(Attack))
+			{
+				actor.playerInputBuffer = ActorSO.InputBuffer.Attack;
+				return;
+			}
 
+			if (!isAttackReady)	return;
 			attackCounter = actor.attackCoolDown;
 			isAttackReady = false;
 			actor.OnAttack.Invoke();
@@ -69,11 +80,29 @@ public class PlayerController : MonoBehaviour
 	}
     private void Update()
     {
-		if(!isDashReady) dashCounter -= Time.deltaTime;
-		if (dashCounter <= 0) isDashReady = true;
+		if (actor.currentState.GetType() != typeof(Dash))
+        {
+			if (!isDashReady) dashCounter -= Time.deltaTime;
+			if (dashCounter <= 0)
+			{
+				isDashReady = true;
+			}
+		}
+		if (actor.currentState.GetType() != typeof(Attack))
+		{
+			if (!isAttackReady) attackCounter -= Time.deltaTime;
+			if (attackCounter <= 0)
+            {
+				isAttackReady = true;
 
-		if (!isAttackReady) attackCounter -= Time.deltaTime;
-		if (attackCounter <= 0) isAttackReady = true;
+				if(actor.playerInputBuffer.Equals(ActorSO.InputBuffer.Attack))
+                {
+					actor.OnAttack.Invoke();
+					isAttackReady = false;
+					actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+                }
+			}
+		}
 		actor.currentState.UpdateState();
     }
     private void FixedUpdate()

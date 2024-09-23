@@ -11,36 +11,47 @@ public class PlayerAnimationManager : MonoBehaviour
     private UnityAction setIdle;
     private UnityAction setWalk;
 
+    private UnityAction<bool, int> setAttack;
+    private List<string> attacks = new List<string>();
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
         setIdle = new UnityAction(() => SetIsWalking(false));
         setWalk = new UnityAction(() => SetIsWalking(true));
+
+        setAttack = new UnityAction<bool, int>((isAttacking, attackID) => SetIsAttacking(isAttacking, attackID));
+
+        attacks.Add("Attack_01");
+        attacks.Add("Attack_02");
+        attacks.Add("Attack_03");
     }
     private void OnEnable()
     {
         actor.OnIdleAnim.AddListener(setIdle);
         actor.OnWalkAnim.AddListener(setWalk);
-        actor.OnDashAnim.AddListener(setDash);
-        actor.OnAttackAnim.AddListener(setAttack);
+        actor.OnDashAnim.AddListener(TriggerDash);
+        actor.onAttackAnim.AddListener(setAttack);
     }
     private void OnDisable()
     {
         actor.OnIdleAnim.RemoveListener(setIdle);
         actor.OnWalkAnim.RemoveListener(setWalk);
-        actor.OnDashAnim.RemoveListener(setDash);
+        actor.OnDashAnim.RemoveListener(TriggerDash);
+        actor.onAttackAnim.RemoveListener(setAttack);
+
     }
 
     private void SetIsWalking(bool isWalking)
     {
         animator.SetBool("isWalking", isWalking);
     }
-    private void setDash()
+    private void TriggerDash()
     {
         animator.SetTrigger("Dash");
     }
-    private void setAttack()
+    private void SetIsAttacking(bool isAttacking, int attackID)
     {
-        animator.SetTrigger("Attack_Scythe_1");
+        animator.SetBool(attacks[attackID],isAttacking);
     }
 }

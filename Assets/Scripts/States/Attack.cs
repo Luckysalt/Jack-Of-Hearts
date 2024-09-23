@@ -8,8 +8,7 @@ public class Attack : State
     protected override void StartState()
     {
         base.StartState();
-
-        actor.OnAttackAnim.Invoke();
+        actor.onAttackAnim.Invoke(true, actor.currentAttackID);
 
         stateLifeTime = actor.attackTime;
         actor.rigidbody.velocity = Vector3.zero;
@@ -33,6 +32,18 @@ public class Attack : State
     protected override void EndState()
     {
         base.EndState();
+
+        actor.onAttackAnim.Invoke(false,actor.currentAttackID);
+
+        if (actor.currentAttackID >= 2)
+        {
+            actor.currentAttackID = 0;
+        }
+        else
+        {
+            actor.currentAttackID++;
+        }
+
         actor.rigidbody.velocity = Vector3.zero;
 
         switch(actor.playerInputBuffer)
@@ -40,15 +51,15 @@ public class Attack : State
             case ActorSO.InputBuffer.Attack:
                 actor.OnAttack.Invoke();
                 actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
-                break;
+                return;
             case ActorSO.InputBuffer.Dash:
                 actor.OnDash.Invoke();
                 actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
-                break;
+                return;
             case ActorSO.InputBuffer.Empty:
                 if (actor.keybinds.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
                 else actor.OnIdle.Invoke();
-                break;
+                return;
         }
     }
     private void SetAttackDashTarget()
