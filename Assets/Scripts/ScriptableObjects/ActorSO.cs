@@ -58,6 +58,13 @@ public class ActorSO : ScriptableObject
 
     //Player Input
     private Keybinds m_keybinds;
+    public enum InputBuffer
+    {
+        Empty,
+        Attack,
+        Dash,
+    }
+    public InputBuffer playerInputBuffer = InputBuffer.Empty;
     #endregion
 
     #region Getters/Setters

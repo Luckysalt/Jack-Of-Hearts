@@ -35,8 +35,21 @@ public class Attack : State
         base.EndState();
         actor.rigidbody.velocity = Vector3.zero;
 
-        if (actor.keybinds.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
-        else actor.OnIdle.Invoke();
+        switch(actor.playerInputBuffer)
+        {
+            case ActorSO.InputBuffer.Attack:
+                actor.OnAttack.Invoke();
+                actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+                break;
+            case ActorSO.InputBuffer.Dash:
+                actor.OnDash.Invoke();
+                actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+                break;
+            case ActorSO.InputBuffer.Empty:
+                if (actor.keybinds.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
+                else actor.OnIdle.Invoke();
+                break;
+        }
     }
     private void SetAttackDashTarget()
     {

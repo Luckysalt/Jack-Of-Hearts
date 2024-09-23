@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
 	private float attackCounter = 0;
 	private bool isAttackReady = true;
+
     private void Awake()
     {
 		actor.currentState = GetComponent<Idle>(); //sets idle state to default
@@ -35,7 +36,11 @@ public class PlayerController : MonoBehaviour
 		};
 		actor.keybinds.Player.Dash.performed += ctx =>
 		{
-			if (actor.currentState.GetType() == typeof(Attack)) return;
+			if (actor.currentState.GetType() == typeof(Attack))
+            {
+				actor.playerInputBuffer = ActorSO.InputBuffer.Dash;
+				return;
+            }
 			if (!isDashReady) return;
 			dashCounter = actor.dashCoolDown;
 			isDashReady = false;
@@ -43,7 +48,11 @@ public class PlayerController : MonoBehaviour
 		};
 		actor.keybinds.Player.Attack.performed += ctx =>
 		{
-			if (actor.currentState.GetType() == typeof(Dash)) return;
+			if (actor.currentState.GetType() == typeof(Dash))
+            {
+				actor.playerInputBuffer = ActorSO.InputBuffer.Attack;
+				return;
+            }
 			if (!isAttackReady)	return;
 
 			attackCounter = actor.attackCoolDown;
