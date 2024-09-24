@@ -14,16 +14,13 @@ using FMODUnity;
 public class ActorSO : ScriptableObject
 {
     #region Properties
-    [Header("State")]
-    [SerializeField] private State m_currentState;
-
-    [Header("Aiming")]
-    public Vector3 aimDirection;
-    public Vector3 aimTarget;
+    [Header("Aiming")] //<<<<<<-----------CHANGE
+    public Vector3 aimDirection;//<<<<<<-----------CHANGE
+    public Vector3 aimTarget;//<<<<<<-----------CHANGE
 
     [Header("Movement")]
-    [SerializeField] private Vector3 m_moveDirection;
-    [SerializeField] private Vector3 m_lookDirection;
+    [SerializeField] private Vector3 m_moveDirection;//<<<<<<-----------CHANGE
+    [SerializeField] private Vector3 m_lookDirection;//<<<<<<-----------CHANGE
     [SerializeField] private float m_rotationSpeed = 500f;
     [SerializeField] private float m_maxSpeed = 8f;
     [SerializeField] private float m_acceleration = 200f;
@@ -42,13 +39,11 @@ public class ActorSO : ScriptableObject
     public float dashDistance = 5f;
 
     [Header("Attack")]
-    public LayerMask antiClippingDetection;
     public float attackTime = 1f;
     public float attackCoolDown = 1f;
     public float attackDashSpeed = 10f;
     public float attackDashDistance = 3f;
     public int currentAttackID = 0;
-
 
     [Header("Ground Detection")]
     [SerializeField] private LayerMask m_groundDetectionAffected;
@@ -57,24 +52,20 @@ public class ActorSO : ScriptableObject
     [SerializeField] private float m_springStrength;
     [SerializeField] private float m_springDamper;
 
-    private Keybinds m_keybinds;
-    [HideInInspector] public enum InputBuffer
+    [Header("Anti Clipping")]
+    public LayerMask antiClippingDetection;
+    [HideInInspector] public enum InputBuffer//<<<<<<-----------CHANGE
     {
         Empty,
         Attack,
         Dash,
     }
-    public InputBuffer playerInputBuffer = InputBuffer.Empty;
-
-    //Rigidbody
-    private Rigidbody m_rigidbody;
+    public InputBuffer playerInputBuffer = InputBuffer.Empty;//<<<<<<-----------CHANGE
 
     #endregion
 
     #region Getters/Setters
     // buttugly and annoying getters and setters, better make everything public, who cares
-    //State
-    public State currentState { get { return m_currentState; } set { m_currentState = value; } }
     //Movement
     public Vector3 moveDirection { get { return m_moveDirection;  } set { m_moveDirection = value; } }
     public Vector3 lookDirection { get { return m_lookDirection; } set { m_lookDirection = value; } }
@@ -98,23 +89,19 @@ public class ActorSO : ScriptableObject
     public float heightAboveGround { get { return m_heightAboveGround; } set { m_heightAboveGround = value; } }
     public float springStrength { get { return m_springStrength; } set { m_springStrength = value; } }
     public float springDamper { get { return m_springDamper; } set { m_springDamper = value; } }
-    //Rigidbody
-    public Rigidbody rigidbody { get { return m_rigidbody; } set { m_rigidbody = value; } }
-    //Player Input
-    public Keybinds keybinds { get { return m_keybinds; } set { m_keybinds = value; } }
-    #endregion // i stopped using getters and setters and made the rest public, this is just annoying to keep up with
+    #endregion 
 
     #region Events
     //States
-    [HideInInspector] public UnityEvent OnIdle = new UnityEvent();
-    [HideInInspector] public UnityEvent OnWalk = new UnityEvent();
-    [HideInInspector] public UnityEvent OnDash = new UnityEvent();
-    [HideInInspector] public UnityEvent OnAttack = new UnityEvent();
+    [HideInInspector] public UnityEvent OnIdle = new UnityEvent();//<<<<<<-----------CHANGE
+    [HideInInspector] public UnityEvent OnWalk = new UnityEvent();//<<<<<<-----------CHANGE
+    [HideInInspector] public UnityEvent OnDash = new UnityEvent();//<<<<<<-----------CHANGE
+    [HideInInspector] public UnityEvent OnAttack = new UnityEvent();//<<<<<<-----------CHANGE
     //Animations
-    [HideInInspector] public UnityEvent OnIdleAnim = new UnityEvent();
-    [HideInInspector] public UnityEvent OnWalkAnim = new UnityEvent();
-    [HideInInspector] public UnityEvent<bool> OnDashAnim = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<bool, int> OnAttackAnim = new UnityEvent<bool, int>();
+    [HideInInspector] public UnityEvent OnIdleAnim = new UnityEvent();//<<<<<<-----------CHANGE
+    [HideInInspector] public UnityEvent OnWalkAnim = new UnityEvent();//<<<<<<-----------CHANGE
+    [HideInInspector] public UnityEvent<bool> OnDashAnim = new UnityEvent<bool>();//<<<<<<-----------CHANGE
+    [HideInInspector] public UnityEvent<bool, int> OnAttackAnim = new UnityEvent<bool, int>();//<<<<<<-----------CHANGE
     [HideInInspector] public UnityEvent<EventReference, Vector3> OnPlayOneShot = new UnityEvent<EventReference, Vector3>();
     #endregion
 }

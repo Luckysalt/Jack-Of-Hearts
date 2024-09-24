@@ -21,8 +21,8 @@ public class AudioManager : MonoBehaviour
     {
         player.OnPlayOneShot.RemoveListener(playOneShot);
     }
-    public void PlayOneShot(EventReference p_sound, Vector3 p_worldPos)
+    public void PlayOneShot(EventReference sound, Vector3 worldPos)
     {
-        RuntimeManager.PlayOneShot(p_sound, p_worldPos);
+        RuntimeManager.PlayOneShot(sound, worldPos);
     }
 }

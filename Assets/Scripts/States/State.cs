@@ -2,13 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Controller))]
 public abstract class State : MonoBehaviour
 {
-    [SerializeField] protected ActorSO actor;
+    protected ActorSO actor;
+
+    protected Controller controller;
+
     protected float stateLifeTime;
+    protected virtual void Awake()
+    {
+        controller = GetComponent<Controller>();
+        actor = controller.actor;
+    }
     protected virtual void SetToCurrentState() 
     {
-        actor.currentState = this;
+        controller.currentState = this;
         StartState();
     }
     protected virtual void StartState()
@@ -33,9 +42,9 @@ public abstract class State : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, rayDir, out hit, actor.groundDetectionRayDistance, actor.groundDetectionAffected))
         {
-            if (actor.rigidbody.useGravity) actor.rigidbody.useGravity = false;
+            if (controller.GetComponent<Rigidbody>().useGravity) controller.GetComponent<Rigidbody>().useGravity = false;
 
-            Vector3 vel = actor.rigidbody.velocity;
+            Vector3 vel = controller.GetComponent<Rigidbody>().velocity;
             Vector3 otherVel = Vector3.zero;
             Rigidbody hitBody = hit.rigidbody;
 
@@ -52,7 +61,7 @@ public abstract class State : MonoBehaviour
 
             float springForce = (currentHeight * actor.springStrength) - (relativeVel * actor.springDamper);
 
-            actor.rigidbody.AddForce(rayDir * springForce);
+            controller.GetComponent<Rigidbody>().AddForce(rayDir * springForce);
 
             if (hitBody != null) // applies force to rigidbodies beneath 
             {
@@ -64,13 +73,13 @@ public abstract class State : MonoBehaviour
         }
         else
         {
-            if (!actor.rigidbody.useGravity) actor.rigidbody.useGravity = true;
+            if (!controller.GetComponent<Rigidbody>().useGravity) controller.GetComponent<Rigidbody>().useGravity = true;
         }
     }
     private void Movement()
     {
-        if (actor.currentState.GetType() == typeof(Dash)) return; //if actor is dashing, skip movement
-        if (actor.currentState.GetType() == typeof(Attack)) return;
+        if (controller.currentState.GetType() == typeof(Dash)) return; //if actor is dashing, skip movement
+        if (controller.currentState.GetType() == typeof(Attack)) return;
 
         Vector3 unitVel = actor.goalVel.normalized;
 
@@ -82,16 +91,16 @@ public abstract class State : MonoBehaviour
 
         actor.goalVel = Vector3.MoveTowards(actor.goalVel, goalVel, accel * Time.fixedDeltaTime); // ToDo: goalVel + groundVel
 
-        Vector3 neededAccel = (actor.goalVel - actor.rigidbody.velocity) / Time.fixedDeltaTime;
+        Vector3 neededAccel = (actor.goalVel - controller.GetComponent<Rigidbody>().velocity) / Time.fixedDeltaTime;
         float maxAccel = actor.maxAccelForce * actor.maxAccelerationForceFactorFromDot.Evaluate(velDot) * actor.maxAccelForceFactor;
         neededAccel = Vector3.ClampMagnitude(neededAccel, maxAccel);
-        actor.rigidbody.AddForceAtPosition(Vector3.Scale(neededAccel * actor.rigidbody.mass, actor.moveForceScale), transform.position);
+        controller.GetComponent<Rigidbody>().AddForceAtPosition(Vector3.Scale(neededAccel * controller.GetComponent<Rigidbody>().mass, actor.moveForceScale), transform.position);
     }
     private void FacingDirection()
     {
         float rotationSpeed;
-        if (actor.currentState.GetType() == typeof(Dash)) rotationSpeed = 1000f; //if actor is dashing, instant rotation towards dash direction
-        else if (actor.currentState.GetType() == typeof(Attack)) rotationSpeed = 1000f; //same for attack
+        if (controller.currentState.GetType() == typeof(Dash)) rotationSpeed = 1000f; //if actor is dashing, instant rotation towards dash direction
+        else if (controller.currentState.GetType() == typeof(Attack)) rotationSpeed = 1000f; //same for attack
         else rotationSpeed = actor.rotationSpeed;
 
         if (!actor.lookDirection.Equals(Vector3.zero))
@@ -99,7 +108,7 @@ public abstract class State : MonoBehaviour
             Quaternion rotation = Quaternion.LookRotation(actor.lookDirection);
             rotation.x = 0f;
             rotation.z = 0f;
-            actor.rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.fixedDeltaTime));
+            controller.GetComponent<Rigidbody>().MoveRotation(Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.fixedDeltaTime));
         }
     }
 }

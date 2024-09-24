@@ -10,7 +10,7 @@ public class Dash : State
         base.StartState();
         actor.OnDashAnim.Invoke(true);
         stateLifeTime = actor.dashTime;
-        actor.rigidbody.velocity = Vector3.zero;
+        controller.rigidBody.velocity = Vector3.zero;
 
         SetDashTarget();
     }
@@ -20,7 +20,7 @@ public class Dash : State
 
         Vector3 newPosition = MathsUtils.LerpSmoothing(transform.position, dashTarget, actor.dashSpeed, Time.fixedDeltaTime);
 
-        actor.rigidbody.MovePosition(newPosition);
+        controller.rigidBody.MovePosition(newPosition);
 
         stateLifeTime -= Time.fixedDeltaTime;
         if (stateLifeTime <= 0) EndState();
@@ -28,24 +28,27 @@ public class Dash : State
     protected override void EndState()
     {
         base.EndState();
-        actor.rigidbody.velocity = Vector3.zero;
+        controller.rigidBody.velocity = Vector3.zero;
 
         actor.OnDashAnim.Invoke(false);
 
-        switch (actor.playerInputBuffer)
+        if(controller.controllerType.Equals(Controller.ControllerType.Player))
         {
-            case ActorSO.InputBuffer.Attack:
-                actor.OnAttack.Invoke();
-                actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
-                break;
-            case ActorSO.InputBuffer.Dash:
-                actor.OnDash.Invoke();
-                actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
-                break;
-            case ActorSO.InputBuffer.Empty:
-                if (actor.keybinds.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
-                else actor.OnIdle.Invoke();
-                break;
+            switch (actor.playerInputBuffer)
+            {
+                case ActorSO.InputBuffer.Attack:
+                    actor.OnAttack.Invoke();
+                    actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+                    break;
+                case ActorSO.InputBuffer.Dash:
+                    actor.OnDash.Invoke();
+                    actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+                    break;
+                case ActorSO.InputBuffer.Empty:
+                    if (controller.inputActions.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
+                    else actor.OnIdle.Invoke();
+                    break;
+            }
         }
     }
     private void SetDashTarget()
