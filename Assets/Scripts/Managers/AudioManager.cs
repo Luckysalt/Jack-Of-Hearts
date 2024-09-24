@@ -1,23 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using FMODUnity;
 
 public class AudioManager : MonoBehaviour
 {
-    public static AudioManager instance { get; private set; }
+    public ActorSO player;
+    private UnityAction<EventReference, Vector3> playOneShot;
 
     private void Awake()
     {
-        if(instance !=null)
-        {
-            Debug.LogError("Found more than one Audio Manager in the scene");
-        }
-        instance = this;
+        playOneShot = new UnityAction<EventReference, Vector3>((sound, worldPos) => PlayOneShot(sound, worldPos));
     }
-
-    public void PlayOneShot(EventReference sound, Vector3 worldPos)
+    private void OnEnable()
     {
-        RuntimeManager.PlayOneShot(sound, worldPos);
+        player.OnPlayOneShot.AddListener(playOneShot);
+    }
+    private void OnDisable()
+    {
+        player.OnPlayOneShot.RemoveListener(playOneShot);
+    }
+    public void PlayOneShot(EventReference p_sound, Vector3 p_worldPos)
+    {
+        RuntimeManager.PlayOneShot(p_sound, p_worldPos);
     }
 }

@@ -21,7 +21,6 @@ public class Dash : State
         Vector3 newPosition = MathsUtils.LerpSmoothing(transform.position, dashTarget, actor.dashSpeed, Time.fixedDeltaTime);
 
         actor.rigidbody.MovePosition(newPosition);
-        //actor.rigidbody.AddForce(actor.lookDirection * actor.dashSpeed, ForceMode.Impulse);
 
         stateLifeTime -= Time.fixedDeltaTime;
         if (stateLifeTime <= 0) EndState();

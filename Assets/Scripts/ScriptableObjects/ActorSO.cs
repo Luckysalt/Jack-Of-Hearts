@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 [CreateAssetMenu(fileName = "Actor", menuName = "ScriptableObjects/Actor", order = 1)]
 /// <summary>
@@ -114,5 +115,6 @@ public class ActorSO : ScriptableObject
     [HideInInspector] public UnityEvent OnWalkAnim = new UnityEvent();
     [HideInInspector] public UnityEvent<bool> OnDashAnim = new UnityEvent<bool>();
     [HideInInspector] public UnityEvent<bool, int> OnAttackAnim = new UnityEvent<bool, int>();
+    [HideInInspector] public UnityEvent<EventReference, Vector3> OnPlayOneShot = new UnityEvent<EventReference, Vector3>();
     #endregion
 }

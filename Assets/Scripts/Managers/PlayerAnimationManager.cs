@@ -6,7 +6,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof (Animator))]
 public class PlayerAnimationManager : MonoBehaviour
 {
-    [SerializeField] private ActorSO actor;
+    [SerializeField] private ActorSO player;
     private Animator animator;
     private UnityAction setIdle;
     private UnityAction setWalk;
@@ -30,18 +30,17 @@ public class PlayerAnimationManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        actor.OnIdleAnim.AddListener(setIdle);
-        actor.OnWalkAnim.AddListener(setWalk);
-        actor.OnDashAnim.AddListener(setDash);
-        actor.OnAttackAnim.AddListener(setAttack);
+        player.OnIdleAnim.AddListener(setIdle);
+        player.OnWalkAnim.AddListener(setWalk);
+        player.OnDashAnim.AddListener(setDash);
+        player.OnAttackAnim.AddListener(setAttack);
     }
     private void OnDisable()
     {
-        actor.OnIdleAnim.RemoveListener(setIdle);
-        actor.OnWalkAnim.RemoveListener(setWalk);
-        actor.OnDashAnim.RemoveListener(setDash);
-        actor.OnAttackAnim.RemoveListener(setAttack);
-
+        player.OnIdleAnim.RemoveListener(setIdle);
+        player.OnWalkAnim.RemoveListener(setWalk);
+        player.OnDashAnim.RemoveListener(setDash);
+        player.OnAttackAnim.RemoveListener(setAttack);
     }
 
     private void SetIsWalking(bool isWalking)
