@@ -12,7 +12,7 @@ public class Attack : State
 
         stateLifeTime = actor.attackTime;
         controller.rigidBody.velocity = Vector3.zero;
-        actor.lookDirection = actor.aimDirection;
+        controller.lookDirection = controller.aimDirection;
 
         SetAttackDashTarget();
     }
@@ -48,17 +48,17 @@ public class Attack : State
 
         if (controller.controllerType.Equals(Controller.ControllerType.Player))
         {
-            switch (actor.playerInputBuffer)
+            switch (controller.playerInputBuffer)
             {
-                case ActorSO.InputBuffer.Attack:
+                case Controller.InputBuffer.Attack:
                     actor.OnAttack.Invoke();
-                    actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+                    controller.playerInputBuffer = Controller.InputBuffer.Empty;
                     return;
-                case ActorSO.InputBuffer.Dash:
+                case Controller.InputBuffer.Dash:
                     actor.OnDash.Invoke();
-                    actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+                    controller.playerInputBuffer = Controller.InputBuffer.Empty;
                     return;
-                case ActorSO.InputBuffer.Empty:
+                case Controller.InputBuffer.Empty:
                     if (controller.inputActions.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
                     else actor.OnIdle.Invoke();
                     return;
@@ -71,7 +71,7 @@ public class Attack : State
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, actor.aimDirection, out hit, Mathf.Infinity, actor.antiClippingDetection))
+        if (Physics.Raycast(transform.position, controller.aimDirection, out hit, Mathf.Infinity, actor.antiClippingDetection))
         {
             if(distance > hit.distance)
             {
@@ -79,7 +79,7 @@ public class Attack : State
             }
         }
 
-        attackDashTarget = transform.position + actor.aimDirection * distance;
+        attackDashTarget = transform.position + controller.aimDirection * distance;
     }
     private void OnEnable()
     {

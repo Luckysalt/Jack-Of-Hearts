@@ -22,7 +22,7 @@ public abstract class State : MonoBehaviour
     }
     protected virtual void StartState()
     {
-        if (!actor.moveDirection.Equals(Vector3.zero)) actor.lookDirection = actor.moveDirection;
+        if (!controller.moveDirection.Equals(Vector3.zero)) controller.lookDirection = controller.moveDirection;
     }
     protected virtual void EndState() { }
     public virtual void UpdateState() { }
@@ -83,11 +83,11 @@ public abstract class State : MonoBehaviour
 
         Vector3 unitVel = actor.goalVel.normalized;
 
-        float velDot = Vector3.Dot(actor.moveDirection, unitVel);
+        float velDot = Vector3.Dot(controller.moveDirection, unitVel);
 
         float accel = actor.acceleration * actor.accelerationFactorFromDot.Evaluate(velDot);
 
-        Vector3 goalVel = actor.moveDirection * actor.maxSpeed * actor.speedFactor;
+        Vector3 goalVel = controller.moveDirection * actor.maxSpeed * actor.speedFactor;
 
         actor.goalVel = Vector3.MoveTowards(actor.goalVel, goalVel, accel * Time.fixedDeltaTime); // ToDo: goalVel + groundVel
 
@@ -103,9 +103,9 @@ public abstract class State : MonoBehaviour
         else if (controller.currentState.GetType() == typeof(Attack)) rotationSpeed = 1000f; //same for attack
         else rotationSpeed = actor.rotationSpeed;
 
-        if (!actor.lookDirection.Equals(Vector3.zero))
+        if (!controller.lookDirection.Equals(Vector3.zero))
         {
-            Quaternion rotation = Quaternion.LookRotation(actor.lookDirection);
+            Quaternion rotation = Quaternion.LookRotation(controller.lookDirection);
             rotation.x = 0f;
             rotation.z = 0f;
             controller.GetComponent<Rigidbody>().MoveRotation(Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.fixedDeltaTime));

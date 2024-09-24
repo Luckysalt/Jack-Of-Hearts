@@ -359,7 +359,6 @@ GameObject:
   - component: {fileID: 3055754300243712283}
   - component: {fileID: 1563749258954773308}
   - component: {fileID: 4055253421461571020}
-  - component: {fileID: 4424652093210073403}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -538,6 +537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa974311da7d12642a3b12ca6926bc55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_actor: {fileID: 11400000, guid: 3316ce253bd9746409264134b0086acd, type: 2}
 --- !u!114 &7554517534950764040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -550,7 +550,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e819253ac1bc41240a352c3703cc3a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: {fileID: 11400000, guid: 3316ce253bd9746409264134b0086acd, type: 2}
 --- !u!114 &3055754300243712283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,7 +562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ce2fb36ce4603040a4ccd490ef0eecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: {fileID: 11400000, guid: 3316ce253bd9746409264134b0086acd, type: 2}
 --- !u!114 &1563749258954773308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,7 +574,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dcfdeb938137d64f948ef4b8dba894b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: {fileID: 11400000, guid: 3316ce253bd9746409264134b0086acd, type: 2}
 --- !u!114 &4055253421461571020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,31 +586,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955dfb34ef5645a40a1bd8a052f4da4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actor: {fileID: 11400000, guid: 3316ce253bd9746409264134b0086acd, type: 2}
---- !u!114 &4424652093210073403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3856710631973797400}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65a962c5a86c05e46bb688e9276ea4ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionAsset: {fileID: -944628639613478452, guid: d144d7c2feedb3d458e34cb60ca76ebb,
-    type: 3}
-  actor: {fileID: 11400000, guid: 3316ce253bd9746409264134b0086acd, type: 2}
-  aim: 1
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 8
-  aimingTransform: {fileID: 9156667026729210840}
-  gizmo_cameraRay: 0
-  gizmo_target: 0
-  gizmo_ignoredHeightTarget: 0
-  gizmo_projectedTarget: 1
 --- !u!1 &8066732575280048255
 GameObject:
   m_ObjectHideFlags: 0

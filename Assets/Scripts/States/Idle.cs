@@ -8,7 +8,7 @@ public class Idle : State
     {
         base.StartState();
         actor.OnIdleAnim.Invoke();
-        actor.moveDirection = Vector3.zero;
+        controller.moveDirection = Vector3.zero;
     }
     private void OnEnable()
     {

@@ -14,13 +14,7 @@ using FMODUnity;
 public class ActorSO : ScriptableObject
 {
     #region Properties
-    [Header("Aiming")] //<<<<<<-----------CHANGE
-    public Vector3 aimDirection;//<<<<<<-----------CHANGE
-    public Vector3 aimTarget;//<<<<<<-----------CHANGE
-
     [Header("Movement")]
-    [SerializeField] private Vector3 m_moveDirection;//<<<<<<-----------CHANGE
-    [SerializeField] private Vector3 m_lookDirection;//<<<<<<-----------CHANGE
     [SerializeField] private float m_rotationSpeed = 500f;
     [SerializeField] private float m_maxSpeed = 8f;
     [SerializeField] private float m_acceleration = 200f;
@@ -54,21 +48,10 @@ public class ActorSO : ScriptableObject
 
     [Header("Anti Clipping")]
     public LayerMask antiClippingDetection;
-    [HideInInspector] public enum InputBuffer//<<<<<<-----------CHANGE
-    {
-        Empty,
-        Attack,
-        Dash,
-    }
-    public InputBuffer playerInputBuffer = InputBuffer.Empty;//<<<<<<-----------CHANGE
-
     #endregion
 
     #region Getters/Setters
-    // buttugly and annoying getters and setters, better make everything public, who cares
     //Movement
-    public Vector3 moveDirection { get { return m_moveDirection;  } set { m_moveDirection = value; } }
-    public Vector3 lookDirection { get { return m_lookDirection; } set { m_lookDirection = value; } }
     public float rotationSpeed { get { return m_rotationSpeed; } set { m_rotationSpeed = value; } }
     public float maxSpeed { get { return m_maxSpeed; } set { m_maxSpeed = value; } }
     public float acceleration { get { return m_acceleration; } set { m_acceleration = value; } }

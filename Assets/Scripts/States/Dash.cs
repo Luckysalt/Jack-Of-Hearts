@@ -34,17 +34,17 @@ public class Dash : State
 
         if(controller.controllerType.Equals(Controller.ControllerType.Player))
         {
-            switch (actor.playerInputBuffer)
+            switch (controller.playerInputBuffer)
             {
-                case ActorSO.InputBuffer.Attack:
+                case Controller.InputBuffer.Attack:
                     actor.OnAttack.Invoke();
-                    actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+                    controller.playerInputBuffer = Controller.InputBuffer.Empty;
                     break;
-                case ActorSO.InputBuffer.Dash:
+                case Controller.InputBuffer.Dash:
                     actor.OnDash.Invoke();
-                    actor.playerInputBuffer = ActorSO.InputBuffer.Empty;
+                    controller.playerInputBuffer = Controller.InputBuffer.Empty;
                     break;
-                case ActorSO.InputBuffer.Empty:
+                case Controller.InputBuffer.Empty:
                     if (controller.inputActions.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
                     else actor.OnIdle.Invoke();
                     break;
@@ -57,7 +57,7 @@ public class Dash : State
 
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, actor.lookDirection, out hit, Mathf.Infinity, actor.antiClippingDetection))
+        if (Physics.Raycast(transform.position, controller.lookDirection, out hit, Mathf.Infinity, actor.antiClippingDetection))
         {
             if (distance > hit.distance)
             {
@@ -65,7 +65,7 @@ public class Dash : State
             }
         }
 
-        dashTarget = transform.position + actor.lookDirection * distance;
+        dashTarget = transform.position + controller.lookDirection * distance;
     }
     private void OnEnable()
     {
