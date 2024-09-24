@@ -12,11 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4440907cf21e81498f32bf1c1cdc839, type: 3}
   m_Name: Jack
   m_EditorClassIdentifier: 
-  m_currentState: {fileID: 0}
-  aimDirection: {x: -0.9609044, y: 0, z: 0.27688026}
-  aimTarget: {x: -1.2095335, y: 3.4855201, z: -12.410624}
-  m_moveDirection: {x: 0, y: 0, z: 0}
-  m_lookDirection: {x: -0.7071068, y: 0, z: -0.7071067}
   m_rotationSpeed: 800
   m_maxSpeed: 6
   m_acceleration: 100
@@ -88,17 +83,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_dashTime: 0.5
-  m_dashCoolDown: 0
-  m_dashSpeed: 5
-  dashDistance: 7
-  antiClippingDetection:
-    serializedVersion: 2
-    m_Bits: 72
-  attackTime: 0.6
-  attackCoolDown: 0
-  attackDashSpeed: 4
-  attackDashDistance: 3
-  currentAttackID: 0
+  m_dashCoolDown: 0.2
+  m_dashSpeed: 3
+  m_dashDistance: 8
+  m_attackTime: 0.5
+  m_attackCoolDown: 1
+  m_attackDashSpeed: 10
+  m_attackDashDistance: 3
   m_groundDetectionAffected:
     serializedVersion: 2
     m_Bits: 72
@@ -106,7 +97,9 @@ MonoBehaviour:
   m_heightAboveGround: 1.2
   m_springStrength: 100
   m_springDamper: 10
-  playerInputBuffer: 0
+  m_antiClippingDetection:
+    serializedVersion: 2
+    m_Bits: 72
   OnIdle:
     m_PersistentCalls:
       m_Calls: []
@@ -129,5 +122,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnAttackAnim:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayOneShot:
     m_PersistentCalls:
       m_Calls: []

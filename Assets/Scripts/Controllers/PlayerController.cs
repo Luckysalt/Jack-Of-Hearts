@@ -26,6 +26,7 @@ public class PlayerController : Controller
 		UpdateCooldown();
 		UpdateInputBuffer();
 		currentState.UpdateState();
+		Debug.Log(currentState);
     }
     private void FixedUpdate()
     {
@@ -85,7 +86,7 @@ public class PlayerController : Controller
 		isAttackReady = false;
 		actor.OnAttack.Invoke();
 	}
-	private void HandleAim(InputAction.CallbackContext ctx)
+	private void HandleAim(InputAction.CallbackContext ctx) 
     {
 		Vector2 mousePosition = ctx.ReadValue<Vector2>();
 		Ray ray = mainCamera.ScreenPointToRay(mousePosition);
@@ -99,7 +100,7 @@ public class PlayerController : Controller
 			Vector3 cameraPosition = mainCamera.transform.position;
 			float t = (aimHeight - aimPlanePoint.y) / (cameraPosition.y - aimPlanePoint.y);
 			
-			aimTarget = Vector3.Lerp(aimPlanePoint, cameraPosition, t);
+			Vector3 aimTarget = Vector3.Lerp(aimPlanePoint, cameraPosition, t);
 
 			aimDirection = new Vector3(aimTarget.x, 0, aimTarget.z) - new Vector3(transform.position.x, 0, transform.position.z);
 

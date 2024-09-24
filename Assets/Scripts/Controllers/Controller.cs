@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Idle))] //needs atleast 1 state, idle is default
 [RequireComponent(typeof(Rigidbody))]
 public abstract class Controller : MonoBehaviour
 {
@@ -25,7 +24,7 @@ public abstract class Controller : MonoBehaviour
     protected Vector3 m_moveDirection;
     protected Vector3 m_lookDirection;
 
-    protected Vector3 m_aimTarget;
+    protected Vector3 m_goalVel = Vector3.zero;
 
     //Player
     public enum InputBuffer
@@ -39,10 +38,12 @@ public abstract class Controller : MonoBehaviour
 
     protected LayerMask m_aimPlaneLayerMask;
 
+    protected int m_currentAttackID = 0;
+
     protected virtual void Awake()
     {
-        currentState = GetComponent<Idle>(); //sets idle state to default
-        rigidBody = GetComponent<Rigidbody>();
+        currentState = GetComponent<Idle>();
+        m_rigidBody = GetComponent<Rigidbody>();
     }
 
     public ControllerType controllerType { get { return m_controllerType; } set { m_controllerType = value; } }
@@ -55,5 +56,6 @@ public abstract class Controller : MonoBehaviour
     public Vector3 aimDirection { get { return m_aimDirection; } set { m_aimDirection = value; } }
     public Vector3 moveDirection { get { return m_moveDirection; } set { m_moveDirection = value; } }
     public Vector3 lookDirection { get { return m_lookDirection; } set { m_lookDirection = value; } }
-    public Vector3 aimTarget { get { return m_aimTarget; } set { m_aimTarget = value; } }
+    public int currentAttackID { get { return m_currentAttackID; } set { m_currentAttackID = value; } }
+    public Vector3 goalVel { get { return m_goalVel; } set { m_goalVel = value; } }
 }

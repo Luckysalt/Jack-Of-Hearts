@@ -81,7 +81,7 @@ public abstract class State : MonoBehaviour
         if (controller.currentState.GetType() == typeof(Dash)) return; //if actor is dashing, skip movement
         if (controller.currentState.GetType() == typeof(Attack)) return;
 
-        Vector3 unitVel = actor.goalVel.normalized;
+        Vector3 unitVel = controller.goalVel.normalized;
 
         float velDot = Vector3.Dot(controller.moveDirection, unitVel);
 
@@ -89,9 +89,9 @@ public abstract class State : MonoBehaviour
 
         Vector3 goalVel = controller.moveDirection * actor.maxSpeed * actor.speedFactor;
 
-        actor.goalVel = Vector3.MoveTowards(actor.goalVel, goalVel, accel * Time.fixedDeltaTime); // ToDo: goalVel + groundVel
+        controller.goalVel = Vector3.MoveTowards(controller.goalVel, goalVel, accel * Time.fixedDeltaTime); // ToDo: goalVel + groundVel
 
-        Vector3 neededAccel = (actor.goalVel - controller.GetComponent<Rigidbody>().velocity) / Time.fixedDeltaTime;
+        Vector3 neededAccel = (controller.goalVel - controller.GetComponent<Rigidbody>().velocity) / Time.fixedDeltaTime;
         float maxAccel = actor.maxAccelForce * actor.maxAccelerationForceFactorFromDot.Evaluate(velDot) * actor.maxAccelForceFactor;
         neededAccel = Vector3.ClampMagnitude(neededAccel, maxAccel);
         controller.GetComponent<Rigidbody>().AddForceAtPosition(Vector3.Scale(neededAccel * controller.GetComponent<Rigidbody>().mass, actor.moveForceScale), transform.position);
