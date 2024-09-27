@@ -46,24 +46,8 @@ public class Attack : State
 
         controller.rigidBody.velocity = Vector3.zero;
 
-        if (controller.controllerType.Equals(Controller.ControllerType.Player))
-        {
-            switch (controller.playerInputBuffer)
-            {
-                case Controller.InputBuffer.Attack:
-                    actor.OnAttack.Invoke();
-                    controller.playerInputBuffer = Controller.InputBuffer.Empty;
-                    return;
-                case Controller.InputBuffer.Dash:
-                    actor.OnDash.Invoke();
-                    controller.playerInputBuffer = Controller.InputBuffer.Empty;
-                    return;
-                case Controller.InputBuffer.Empty:
-                    if (controller.inputActions.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
-                    else actor.OnIdle.Invoke();
-                    return;
-            }
-        }
+        if (controller.inputActions.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
+        else actor.OnIdle.Invoke();
     }
     private void SetAttackDashTarget()
     {

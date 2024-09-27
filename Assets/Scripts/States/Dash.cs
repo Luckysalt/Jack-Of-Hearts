@@ -32,24 +32,8 @@ public class Dash : State
 
         actor.OnDashAnim.Invoke(false);
 
-        if(controller.controllerType.Equals(Controller.ControllerType.Player))
-        {
-            switch (controller.playerInputBuffer)
-            {
-                case Controller.InputBuffer.Attack:
-                    actor.OnAttack.Invoke();
-                    controller.playerInputBuffer = Controller.InputBuffer.Empty;
-                    break;
-                case Controller.InputBuffer.Dash:
-                    actor.OnDash.Invoke();
-                    controller.playerInputBuffer = Controller.InputBuffer.Empty;
-                    break;
-                case Controller.InputBuffer.Empty:
-                    if (controller.inputActions.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
-                    else actor.OnIdle.Invoke();
-                    break;
-            }
-        }
+        if (controller.inputActions.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
+        else actor.OnIdle.Invoke();
     }
     private void SetDashTarget()
     {

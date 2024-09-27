@@ -26,7 +26,6 @@ public class PlayerController : Controller
 		UpdateCooldown();
 		UpdateInputBuffer();
 		currentState.UpdateState();
-		Debug.Log(currentState);
     }
     private void FixedUpdate()
     {
@@ -62,26 +61,24 @@ public class PlayerController : Controller
 
 	private void HandleDash(InputAction.CallbackContext ctx)
 	{
-		if (IsInCombatState())
+		if (IsInCombatState() || !isDashReady)
         {
 			playerInputBuffer = InputBuffer.Dash;
 			return;
 		}
 
-		if (!isDashReady) return;
 		dashCounter = actor.dashCoolDown;
 		isDashReady = false;
 		actor.OnDash.Invoke();
 	}
 	private void HandleAttack(InputAction.CallbackContext ctx)
 	{
-		if (IsInCombatState())
+		if (IsInCombatState() || !isAttackReady)
 		{
 			playerInputBuffer = InputBuffer.Attack;
 			return;
 		}
 
-		if (!isAttackReady) return;
 		attackCounter = actor.attackCoolDown;
 		isAttackReady = false;
 		actor.OnAttack.Invoke();
@@ -133,13 +130,22 @@ public class PlayerController : Controller
 	}
 	private void UpdateInputBuffer()
     {
-		if (!isAttackReady) return;
-		if (currentState is Dash) return;
-		if (!playerInputBuffer.Equals(InputBuffer.Attack)) return;
+		if (IsInCombatState()) return;
 
-		actor.OnAttack.Invoke();
-		attackCounter = actor.attackCoolDown;
-		isAttackReady = false;
-		playerInputBuffer = InputBuffer.Empty;
+		if(playerInputBuffer.Equals(InputBuffer.Dash) && isDashReady)
+        {
+			actor.OnDash.Invoke();
+			dashCounter = actor.dashCoolDown;
+			isDashReady = false;
+			playerInputBuffer = InputBuffer.Empty;
+		}
+
+		if(playerInputBuffer.Equals(InputBuffer.Attack) && isAttackReady)
+        {
+			actor.OnAttack.Invoke();
+			attackCounter = actor.attackCoolDown;
+			isAttackReady = false;
+			playerInputBuffer = InputBuffer.Empty;
+		}
 	}
 }

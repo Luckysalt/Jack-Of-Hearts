@@ -78,8 +78,7 @@ public abstract class State : MonoBehaviour
     }
     private void Movement()
     {
-        if (controller.currentState.GetType() == typeof(Dash)) return; //if actor is dashing, skip movement
-        if (controller.currentState.GetType() == typeof(Attack)) return;
+        if (controller.currentState is Dash || controller.currentState is Attack) return; //if actor is dashing, skip movement
 
         Vector3 unitVel = controller.goalVel.normalized;
 
