@@ -9,6 +9,15 @@ public abstract class State : MonoBehaviour
 
     protected Controller controller;
 
+    protected enum Effect
+    {
+        Default,
+        Stunned,
+        Indestructible,
+    }
+
+    protected Effect currentEffect; //todo: make a effects list, gotta refactor this whole thing tho...
+
     protected float stateLifeTime;
     protected virtual void Awake()
     {
@@ -78,7 +87,7 @@ public abstract class State : MonoBehaviour
     }
     private void Movement()
     {
-        if (controller.currentState is Dash || controller.currentState is Attack) return; //if actor is dashing, skip movement
+        if (currentEffect.Equals(Effect.Stunned)) return; //if actor is dashing, skip movement
 
         Vector3 unitVel = controller.goalVel.normalized;
 

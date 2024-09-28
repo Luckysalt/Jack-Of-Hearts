@@ -110,4 +110,8 @@ public static class MathsUtils
     {
         return end + (start - end) * Mathf.Exp(-decay * dt);
     }
+    public static float LerpSmoothing(float start,float end, float decay,float dt)
+    {
+        return end + (start - end) * Mathf.Exp(-decay * dt);
+    }
 }

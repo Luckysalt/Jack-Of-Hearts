@@ -8,9 +8,10 @@ public class Dash : State
     protected override void StartState()
     {
         base.StartState();
-        actor.OnDashAnim.Invoke(true);
+        actor.OnDashAnimation.Invoke(true);
         stateLifeTime = actor.dashTime;
         controller.rigidBody.velocity = Vector3.zero;
+        currentEffect = Effect.Stunned;
 
         SetDashTarget();
     }
@@ -30,9 +31,9 @@ public class Dash : State
         base.EndState();
         controller.rigidBody.velocity = Vector3.zero;
 
-        actor.OnDashAnim.Invoke(false);
+        actor.OnDashAnimation.Invoke(false);
 
-        if (controller.inputActions.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
+        if (controller.wantsToMove) actor.OnWalk.Invoke();
         else actor.OnIdle.Invoke();
     }
     private void SetDashTarget()

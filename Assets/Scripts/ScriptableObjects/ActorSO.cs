@@ -14,6 +14,8 @@ using FMODUnity;
 public class ActorSO : ScriptableObject
 {
     #region Properties
+    [Header("Health")]
+    [SerializeField] private float m_maxHealth = 100f;
     [Header("Movement")]
     [SerializeField] private float m_rotationSpeed = 500f;
     [SerializeField] private float m_maxSpeed = 8f;
@@ -49,6 +51,8 @@ public class ActorSO : ScriptableObject
     #endregion
 
     #region Getters
+    //Health
+    public float maxHealth => m_maxHealth;
     //Movement
     public float rotationSpeed => m_rotationSpeed;
     public float maxSpeed => m_maxSpeed;
@@ -85,10 +89,12 @@ public class ActorSO : ScriptableObject
     [HideInInspector] public UnityEvent OnDash = new UnityEvent();
     [HideInInspector] public UnityEvent OnAttack = new UnityEvent();
     //Animations
-    [HideInInspector] public UnityEvent OnIdleAnim = new UnityEvent();
-    [HideInInspector] public UnityEvent OnWalkAnim = new UnityEvent();
-    [HideInInspector] public UnityEvent<bool> OnDashAnim = new UnityEvent<bool>();
-    [HideInInspector] public UnityEvent<bool, int> OnAttackAnim = new UnityEvent<bool, int>();
+    [HideInInspector] public UnityEvent OnIdleAnimation = new UnityEvent();
+    [HideInInspector] public UnityEvent OnWalkAnimation = new UnityEvent();
+    [HideInInspector] public UnityEvent<bool> OnDashAnimation = new UnityEvent<bool>();
+    [HideInInspector] public UnityEvent<bool, int> OnAttackAnimation = new UnityEvent<bool, int>();
+    //SFX
     [HideInInspector] public UnityEvent<EventReference, Vector3> OnPlayOneShot = new UnityEvent<EventReference, Vector3>();
+
     #endregion
 }

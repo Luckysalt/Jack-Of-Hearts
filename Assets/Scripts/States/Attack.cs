@@ -8,11 +8,13 @@ public class Attack : State
     protected override void StartState()
     {
         base.StartState();
-        actor.OnAttackAnim.Invoke(true, controller.currentAttackID);
+        actor.OnAttackAnimation.Invoke(true, controller.currentAttackID);
 
         stateLifeTime = actor.attackTime;
         controller.rigidBody.velocity = Vector3.zero;
         controller.lookDirection = controller.aimDirection;
+
+        currentEffect = Effect.Stunned;
 
         SetAttackDashTarget();
     }
@@ -33,7 +35,7 @@ public class Attack : State
     {
         base.EndState();
 
-        actor.OnAttackAnim.Invoke(false,controller.currentAttackID);
+        actor.OnAttackAnimation.Invoke(false,controller.currentAttackID);
 
         if (controller.currentAttackID >= 2)
         {
@@ -46,7 +48,7 @@ public class Attack : State
 
         controller.rigidBody.velocity = Vector3.zero;
 
-        if (controller.inputActions.Player.Move.IsInProgress()) actor.OnWalk.Invoke();
+        if (controller.wantsToMove) actor.OnWalk.Invoke();
         else actor.OnIdle.Invoke();
     }
     private void SetAttackDashTarget()

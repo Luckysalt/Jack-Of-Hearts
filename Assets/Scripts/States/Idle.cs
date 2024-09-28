@@ -7,8 +7,9 @@ public class Idle : State
     protected override void StartState()
     {
         base.StartState();
-        actor.OnIdleAnim.Invoke();
+        actor.OnIdleAnimation.Invoke();
         controller.moveDirection = Vector3.zero;
+        currentEffect = Effect.Default;
     }
     private void OnEnable()
     {

@@ -5,6 +5,17 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : Controller
 {
+	public enum InputBuffer
+	{
+		Empty,
+		Attack,
+		Dash,
+	}
+	private InputBuffer playerInputBuffer = InputBuffer.Empty;
+	private Keybinds inputActions;
+
+	private LayerMask aimPlaneLayerMask;
+
 	private float dashCounter = 0;
 	private bool isDashReady = true;
 
@@ -15,7 +26,7 @@ public class PlayerController : Controller
 	protected override void Awake()
     {
 		base.Awake();
-		controllerType = ControllerType.Player;
+		currentHealth = actor.maxHealth;
 		mainCamera = Camera.main;
 		aimPlaneLayerMask = LayerMask.GetMask("AimPlane");
 
@@ -23,6 +34,8 @@ public class PlayerController : Controller
 	}
     private void Update()
     {
+		if (inputActions.Player.Move.IsInProgress()) wantsToMove = true;
+		else wantsToMove = false;
 		UpdateCooldown();
 		UpdateInputBuffer();
 		currentState.UpdateState();
@@ -31,14 +44,7 @@ public class PlayerController : Controller
     {
 		currentState.FixedUpdateState();
     }
-	private void OnEnable()
-	{
-		inputActions.Player.Enable();
-	}
-	private void OnDisable()
-	{
-		inputActions.Player.Disable();
-	}
+
 	private void SetUpInputActions()
 	{
 		inputActions = new Keybinds();
@@ -147,5 +153,13 @@ public class PlayerController : Controller
 			isAttackReady = false;
 			playerInputBuffer = InputBuffer.Empty;
 		}
+	}
+	private void OnEnable()
+	{
+		inputActions.Player.Enable();
+	}
+	private void OnDisable()
+	{
+		inputActions.Player.Disable();
 	}
 }

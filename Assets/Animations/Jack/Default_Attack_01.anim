@@ -90757,7 +90757,8 @@ AnimationClip:
   - time: 0.16666667
     functionName: PlaySlash01VFX
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 3856710631973797400, guid: 008db61018007314084ff664b8f5459c,
+      type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

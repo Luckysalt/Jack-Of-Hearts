@@ -30,17 +30,17 @@ public class PlayerAnimationManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        player.OnIdleAnim.AddListener(setIdle);
-        player.OnWalkAnim.AddListener(setWalk);
-        player.OnDashAnim.AddListener(setDash);
-        player.OnAttackAnim.AddListener(setAttack);
+        player.OnIdleAnimation.AddListener(setIdle);
+        player.OnWalkAnimation.AddListener(setWalk);
+        player.OnDashAnimation.AddListener(setDash);
+        player.OnAttackAnimation.AddListener(setAttack);
     }
     private void OnDisable()
     {
-        player.OnIdleAnim.RemoveListener(setIdle);
-        player.OnWalkAnim.RemoveListener(setWalk);
-        player.OnDashAnim.RemoveListener(setDash);
-        player.OnAttackAnim.RemoveListener(setAttack);
+        player.OnIdleAnimation.RemoveListener(setIdle);
+        player.OnWalkAnimation.RemoveListener(setWalk);
+        player.OnDashAnimation.RemoveListener(setDash);
+        player.OnAttackAnimation.RemoveListener(setAttack);
     }
 
     private void SetIsWalking(bool isWalking)

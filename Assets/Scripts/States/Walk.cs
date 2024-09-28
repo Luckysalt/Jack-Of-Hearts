@@ -7,7 +7,8 @@ public class Walk : State
     protected override void StartState()
     {
         base.StartState();
-        actor.OnWalkAnim.Invoke();
+        actor.OnWalkAnimation.Invoke();
+        currentEffect = Effect.Default;
     }
     private void OnEnable()
     {
